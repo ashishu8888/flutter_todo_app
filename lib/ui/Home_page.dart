@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/main.dart';
+import 'package:flutter_todo_app/services/notification.dart';
 import 'package:flutter_todo_app/services/theme_service.dart';
 import 'package:flutter_todo_app/ui/theme.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,6 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var notifyHelper;
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper = Notify();
+    notifyHelper.requestIOSPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +35,10 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   setState(() {
                     ThemeService().switchTheme();
+                    notifyHelper.initializeNotification();
+                    notifyHelper.displayNotification(
+                        title: "Theme Changed",
+                        body: Get.isDarkMode ? "Light Mode" : "Dark Mode");
                   });
                 }),
             expandedHeight: 200,
