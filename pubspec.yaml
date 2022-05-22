@@ -40,6 +40,9 @@ dependencies:
   flutter_native_timezone : 
   intl : 
   google_fonts :
+  date_picker_timeline : 
+  js: ^0.6.2
+  sqflite :
 dev_dependencies:
   flutter_test:
     sdk: flutter

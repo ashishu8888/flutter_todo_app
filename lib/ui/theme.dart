@@ -7,21 +7,25 @@ const Color yellowishclr = Color(0xFFFFB746);
 const Color pinkclr = Color(0xFFff4667);
 const Color whiteclr = Colors.white;
 const primaryclr = bluishclr;
-const Color darkGreyClr = Color(0xFF121212);
+Color darkGreyClr = Colors.black54;
 Color darkHeaderClr = Color(0xFF424242);
 
 class Themes {
-  static final light =
-      ThemeData(primaryColor: primaryclr, brightness: Brightness.light);
-  static final dark =
-      ThemeData(primaryColor: darkGreyClr, brightness: Brightness.dark);
+  static final light = ThemeData(
+      backgroundColor: primaryclr,
+      primaryColor: primaryclr,
+      brightness: Brightness.light);
+  static final dark = ThemeData(
+      backgroundColor: darkHeaderClr,
+      primaryColor: darkGreyClr,
+      brightness: Brightness.dark);
 
   TextStyle get subHeadingStyle {
     return GoogleFonts.lato(
         textStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Get.isDarkMode ? Colors.black54 : Colors.white));
+            color: Get.isDarkMode ? Colors.white : Colors.black54));
   }
 
   TextStyle get HeadingStyle {
@@ -29,6 +33,6 @@ class Themes {
         textStyle: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
-            color: Get.isDarkMode ? Colors.black : Colors.white));
+            color: Get.isDarkMode ? Colors.white : Colors.black));
   }
 }

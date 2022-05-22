@@ -3,13 +3,13 @@ import 'package:flutter_todo_app/ui/theme.dart';
 
 class MyButton extends StatelessWidget {
   final String? label;
-  final Function? onTap;
+  final VoidCallback? onTap;
   const MyButton({Key? key, this.label, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: null,
+      onTap: () => onTap!(),
       child: Container(
         child: Center(
           child: Text(

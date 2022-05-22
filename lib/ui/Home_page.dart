@@ -1,10 +1,13 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/main.dart';
 import 'package:flutter_todo_app/services/notification.dart';
 import 'package:flutter_todo_app/services/theme_service.dart';
+import 'package:flutter_todo_app/ui/addTask.dart';
 import 'package:flutter_todo_app/ui/button.dart';
 import 'package:flutter_todo_app/ui/theme.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DateTime _selected = DateTime.now();
   var notifyHelper;
   Themes th = Themes();
   @override
@@ -30,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            backgroundColor: context.theme.backgroundColor,
             elevation: 0,
             // backgroundColor: primaryclr,
             floating: true,
@@ -80,11 +85,11 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     Container(
+                      margin: EdgeInsets.all(5),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -98,15 +103,49 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          const MyButton(
+                          MyButton(
                             label: '+ Add Task',
-                            onTap: null,
+                            onTap: () => Get.to(() => const Addtask()),
                           )
                         ],
                       ),
                     ),
                   ],
                 ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+              child: DatePicker(
+                DateTime.now(),
+                height: 100,
+                width: 80,
+                initialSelectedDate: DateTime.now(),
+                selectionColor: primaryclr,
+                selectedTextColor: Colors.white,
+                monthTextStyle: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey),
+                ),
+                dayTextStyle: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey),
+                ),
+                dateTextStyle: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey),
+                ),
+                onDateChange: (date) {
+                  _selected = date;
+                },
               ),
             ),
           )
