@@ -14,24 +14,24 @@ class Task {
       this.date,
       this.color});
 
-  Task.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    note = json['note'];
-    isCompleted = json['isCompleted'];
-    date = json['date'];
-    color = json['color'];
+  factory Task.fromMap(Map<String, dynamic> json) {
+    return Task(
+        id: json['id'],
+        title: json['title'].toString(),
+        note: json['note'],
+        isCompleted: json['isCompleted'],
+        date: json['date'],
+        color: json['color']);
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['title'] = title;
-    data['data'] = data;
-    data['note'] = note;
-    data['isCompleted'] = isCompleted;
-    data['color'] = color;
-
-    return data;
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'date': date,
+      'note': note,
+      'isCompleted': isCompleted,
+      'color': color,
+    };
   }
 }

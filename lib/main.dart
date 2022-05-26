@@ -9,12 +9,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   static bool dark = false;
-  const MyApp({Key? key}) : super(key: key);
+  MyApp();
 
   // This widget is the root of your application.
   @override

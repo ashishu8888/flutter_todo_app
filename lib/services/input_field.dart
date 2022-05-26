@@ -1,27 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/ui/theme.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InputField extends StatelessWidget {
+class InputField extends StatefulWidget {
   final String title;
   String hint;
-  String? date;
-  final TextEditingController? textEditingController;
+  TextEditingController? textEditingController;
   bool? iswidget;
   bool? iscalender;
   bool? isclock;
 
-  InputField(
-      {Key? key,
-      required this.title,
-      required this.hint,
-      this.textEditingController,
-      this.iswidget,
-      this.iscalender,
-      this.isclock})
-      : super(key: key);
+  InputField({
+    Key? key,
+    required this.title,
+    required this.hint,
+    this.textEditingController,
+    this.iswidget,
+    this.iscalender,
+    this.isclock,
+  }) : super(key: key);
 
+  @override
+  State<InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<InputField> {
+  String? date;
+  DateTime _selectedDate = DateTime.now();
   Themes th = Themes();
 
   @override
@@ -31,7 +38,7 @@ class InputField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            widget.title,
             style: th.subHeadingStyle,
           ),
           const SizedBox(
@@ -49,16 +56,18 @@ class InputField extends StatelessWidget {
                 Expanded(
                   child: TextFormField(
                     // ignore: unnecessary_null_comparison
-                    readOnly: iswidget == null ? false : true,
+                    readOnly: widget.iswidget == null ? false : true,
                     autofocus: false,
                     cursorColor:
                         Get.isDarkMode ? Colors.grey[100] : Colors.grey[400],
-                    controller: textEditingController,
+                    controller: widget.textEditingController,
                     style: const TextStyle(
                       fontSize: 16,
                     ),
                     decoration: InputDecoration(
-                        hintText: date == null ? hint : date,
+                        hintText: widget.iscalender == null
+                            ? widget.hint
+                            : DateFormat.yMMMMd().format(_selectedDate),
                         hintStyle: const TextStyle(fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -73,11 +82,11 @@ class InputField extends StatelessWidget {
                                 width: 0))),
                   ),
                 ),
-                iswidget != null && iscalender != null
+                widget.iswidget != null && widget.iscalender != null
                     ? Container(
                         child: IconButton(
                             onPressed: () {
-                              _getDateTimeFromUSer(context);
+                              _showDate(context);
                             },
                             icon: const Icon(Icons.calendar_month_rounded)),
                       )
@@ -90,16 +99,25 @@ class InputField extends StatelessWidget {
     );
   }
 
-  _getDateTimeFromUSer(BuildContext context) async {
-    DateTime? _selected = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime(2024));
-
-    if (_selected != null) {
-      date = DateFormat.yMMMMd().format(_selected);
-      textEditingController!.text = date!;
-    }
+  _showDate(BuildContext context) {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            //which date will display when user open the picker
+            firstDate: DateTime(1950),
+            //what will be the previous supported year in picker
+            lastDate: DateTime
+                .now()) //what will be the up to supported date in picker
+        .then((pickedDate) {
+      //then usually do the future job
+      if (pickedDate == null) {
+        //if user tap cancel then this function will stop
+        return;
+      }
+      setState(() {
+        //for rebuilding the ui
+        _selectedDate = pickedDate;
+      });
+    });
   }
 }
